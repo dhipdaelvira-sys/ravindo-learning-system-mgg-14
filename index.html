@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RAVINDO | Minggu 14: Troubleshooting & Fault Finding</title>
+  <style>
+    :root {
+      --primary: #0d47a1;
+      --secondary: #ff6d00;
+      --light: #e3f2fd;
+      --dark: #01579b;
+      --danger: #d32f2f;
+      --success: #2e7d32;
+      --text: #212121;
+      --bg: #f5f9ff;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg);
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    header {
+      background: linear-gradient(to right, var(--primary), var(--dark));
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    h2 {
+      font-size: 1.6rem;
+      margin: 25px 0 15px;
+      color: var(--primary);
+      border-bottom: 2px solid var(--light);
+      padding-bottom: 8px;
+    }
+    h3 {
+      font-size: 1.3rem;
+      margin: 20px 0 12px;
+      color: var(--dark);
+    }
+    p, ul, ol {
+      margin-bottom: 16px;
+    }
+    ul, ol {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    .highlight {
+      background-color: #fff8e1;
+      padding: 16px;
+      border-left: 4px solid var(--secondary);
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .pillar {
+      display: flex;
+      gap: 16px;
+      margin: 25px 0;
+      flex-wrap: wrap;
+    }
+    .pillar-card {
+      flex: 1;
+      min-width: 200px;
+      background: var(--light);
+      padding: 20px;
+      border-radius: 10px;
+      border-top: 4px solid;
+    }
+    .head { border-color: #2196f3; }
+    .hand { border-color: #4caf50; }
+    .heart { border-color: #f44336; }
+    .habit { border-color: #9c27b0; }
+    .pillar-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    pre {
+      background: #263238;
+      color: #eeeeee;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+    .story {
+      background: #f9f9f9;
+      border-left: 4px solid var(--danger);
+      padding: 20px;
+      margin: 25px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .story h4 {
+      color: var(--danger);
+      margin-bottom: 12px;
+    }
+    .regulation-box {
+      background: #f3e5f5;
+      border-left: 4px solid #9c27b0;
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .regulation-box h4 {
+      color: #6a1b9a;
+      margin-bottom: 10px;
+    }
+    .resource-box {
+      background: #e3f2fd;
+      border: 2px solid #2196f3;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 25px 0;
+    }
+    .resource-box h4 {
+      color: #0d47a1;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .resource-list {
+      list-style: none;
+      padding: 0;
+    }
+    .resource-list li {
+      margin-bottom: 12px;
+      padding-left: 24px;
+      position: relative;
+    }
+    .resource-list li::before {
+      content: "🔗";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .resource-list a {
+      color: #0d47a1;
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--dark);
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.4rem; }
+      .container { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📚 RAVINDO MARITIME LEARNING SYSTEM</h1>
+      <p>Semester 2: Sistem Kelistrikan Kapal & Kontrol Automasi<br>Universitas Hang Tuah (UHT)</p>
+      <h2 style="color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">🔍 MINGGU 14: TROUBLESHOOTING & FAULT FINDING</h2>
+      <p><em>"Bagaimana Menemukan Akar Masalah dalam Sistem yang Rumit?"</em></p>
+    </header>
+
+    <main style="padding: 25px;">
+      <section>
+        <h2>1️⃣ IDENTITAS MODUL</h2>
+        <p><strong>Sesuai SMME314 – Pirireis University:</strong><br>
+        “Summary review of all topics, Completion of deficiencies”<br>
+        “Immediate corrective actions to take in case of emergencies”</p>
+        <p><strong>Sesuai Auto-2 Scribd:</strong><br>
+        “Develop troubleshooting charts for main engine, generator, steam boiler, and other control systems”</p>
+        <p><strong>Semester/Level:</strong> Semester 2 – Sistem Kelistrikan Kapal & Kontrol Automasi<br>
+        <strong>Minggu:</strong> 14 dari 16<br>
+        <strong>Judul Modul:</strong> Troubleshooting & Fault Finding<br>
+        <strong>Judul Sederhana:</strong> "Detektif Sistem Kapal"<br>
+        <strong>Durasi Belajar Mandiri:</strong> 14 jam<br>
+        <strong>Durasi Kelas:</strong> 4 jam (simulasi gangguan nyata)</p>
+
+        <p><strong>Fokus Minggu Ini:</strong><br>
+        Kamu akan belajar **metode sistematis** untuk mendiagnosis & memperbaiki gangguan di sistem kelistrikan & automasi kapal.</p>
+      </section>
+
+      <section class="resource-box">
+        <h4>📁 MEDIA PEMBELAJARAN</h4>
+        <ul class="resource-list">
+          <li><a href="https://www.youtube.com/watch?v=KJ7XqY5vQ8E" target="_blank">▶ Metode Troubleshooting 5 Langkah</a></li>
+          <li><a href="https://www.youtube.com/watch?v=RmL9ZxW2j4c" target="_blank">▶ Simulasi Gangguan Generator di TechSim 5000</a></li>
+          <li><a href="https://drive.google.com/drive/folders/1ABC123_minggu14_ravindo_uht" target="_blank">📄 Slide & Template: Troubleshooting Chart</a></li>
+        </ul>
+      </section>
+
+      <section class="regulation-box">
+        <h4>📚 LITERATUR NASIONAL & INTERNASIONAL</h4>
+        <p><strong>Internasional:</strong><br>
+        • IMO STCW Regulation III/1: Fault diagnosis competence<br>
+        • TechSim 5000 Manual v8.6 – Chapter 12: Fault Scenarios<br>
+        • DNV GL: Guidelines for Marine Electrical Troubleshooting</p>
+        <p><strong>Nasional:</strong><br>
+        • BKI Rules 2023 – Bab 5: Prosedur Inspeksi & Perbaikan<br>
+        • Buku Ajar: <em>Troubleshooting Sistem Kapal</em> – Politeknik Ilmu Pelayaran Makassar</p>
+      </section>
+
+      <section>
+        <h2>2️⃣ TUJUAN PEMBELAJARAN</h2>
+        <p>Setelah minggu ini, kamu <strong>HARUS BISA:</strong></p>
+
+        <h3>A. Pengetahuan (Kamu TAHU):</h3>
+        <ol>
+          <li>Menjelaskan **5 langkah metode troubleshooting sistematis**</li>
+          <li>Memahami perbedaan **gejala** vs **akar masalah**</li>
+          <li>Menjelaskan prinsip **eliminasi bertahap** dalam diagnosis</li>
+        </ol>
+
+        <h3>B. Keterampilan (Kamu BISA):</h3>
+        <ol>
+          <li>Membuat **troubleshooting chart** untuk generator tidak nyala</li>
+          <li>Menggunakan multimeter & HMI untuk isolasi gangguan</li>
+          <li>Menentukan prioritas tindakan darurat</li>
+        </ol>
+
+        <h3>C. Sikap (Kamu PEDULI):</h3>
+        <ol>
+          <li>Tidak asal tebak penyebab gangguan</li>
+          <li>Selalu catat gejala sebelum reset sistem</li>
+          <li>Berani minta bantuan jika tidak yakin</li>
+        </ol>
+
+        <h3>D. Kebiasaan (Kamu RUTIN):</h3>
+        <ol>
+          <li>Simpan logbook troubleshooting setiap insiden</li>
+          <li>Review kembali kesalahan diagnosis sebelumnya</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>3️⃣ THE 4 PILLARS OF LEARNING (HELD)</h2>
+        <div class="pillar">
+          <div class="pillar-card head">
+            <h4>🧠 HEAD (35%) - Kamu Harus PAHAM</h4>
+            <p><strong>5 Langkah Troubleshooting:</strong></p>
+            <pre>1. IDENTIFIKASI GEJALA
+   • Apa yang salah? (lampu mati, alarm aktif)
+
+2. KUMPULKAN DATA
+   • Cek HMI, multimeter, logbook
+
+3. ANALISIS PENYEBAB
+   • Buat daftar kemungkinan akar masalah
+
+4. UJI HIPOTESIS
+   • Isolasi satu per satu komponen
+
+5. PERBAIKI & VERIFIKASI
+   • Pastikan sistem normal kembali</pre>
+          </div>
+
+          <div class="pillar-card hand">
+            <h4>🔧 HAND (30%) - Kamu Harus BISA</h4>
+            <p><strong>Contoh: Generator Tidak Bisa Start</strong></p>
+            <pre>Gejala: Tombol start tidak responsif
+
+Langkah:
+1. Cek power supply → OK?
+2. Cek interlock oli → tekanan cukup?
+3. Cek level air pendingin → aman?
+4. Cek error code di HMI
+5. Jika semua OK → cek relay start
+
+Template:
+[ ] Power
+[ ] Interlock Oli
+[ ] Level Air
+[ ] Error Code
+[ ] Relay Start</pre>
+          </div>
+        </div>
+
+        <div class="pillar">
+          <div class="pillar-card heart">
+            <h4>❤️ HEART (20%) - Kamu Harus PEDULI</h4>
+            <p><strong>Sikap Profesional:</strong></p>
+            <pre>• Jangan buru-buru ganti spare part
+• Catat gejala sebelum reset
+• Setiap kesalahan adalah pelajaran
+• Keselamatan > Kecepatan perbaikan</pre>
+          </div>
+
+          <div class="pillar-card habit">
+            <h4>🔁 HABIT (15%) - Kamu Harus RUTIN</h4>
+            <p><strong>Rutinitas Troubleshooting:</strong></p>
+            <pre>☐ Simpan template troubleshooting chart
+☐ Catat waktu & gejala insiden
+☐ Foto kondisi sebelum perbaikan
+☐ Laporkan pola gangguan berulang</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>4️⃣ MATERI INTI: MENJADI DETEKTIF SISTEM</h2>
+        <p>Di kapal, **masalah jarang datang sendirian**. Satu gangguan bisa memicu efek domino:</p>
+        <ul>
+          <li>Kabel putus → sensor gagal → PLC salah baca → pompa mati → mesin overheat</li>
+        </ul>
+        <p>Tugas engineer bukan hanya **memperbaiki**, tapi **menemukan akar masalah**.</p>
+
+        <div class="highlight">
+          <p><strong>Gejala vs Akar Masalah:</strong><br>
+          - **Gejala**: Lampu panel mati<br>
+          - **Akar masalah**: Sekring utama putus karena korsleting di kabel lampu<br>
+          <strong>Jika hanya ganti lampu, masalah akan kembali!</strong></p>
+        </div>
+
+        <h3>Analogi Sederhana: Sakit Perut</h3>
+        <p>Dokter tidak langsung kasih obat. Dia tanya:<br>
+        - Kapan mulai sakit?<br>
+        - Makan apa tadi?<br>
+        - Ada demam?<br>
+        Baru setelah analisis, dia tentukan: keracunan atau maag.<br>
+        **Engineer harus seperti dokter — jangan asal tebak!**</p>
+
+        <div class="story">
+          <h4>❤️ Cerita Nyata: Engineer Selamatkan Kapal dengan Analisis Tepat</h4>
+          <p><strong>Kejadian:</strong><br>
+          Di kapal tanker, generator sering mati sendiri. ABK ganti relay berkali-kali — tetap error.<br>
+          Engineer baru cek logbook, ternyata **tegangan turun drastis tiap jam 10 pagi**.<br>
+          Ternyata: saat itu pompa muat hidup → beban melonjak → AVR tidak sanggup.<br>
+          Solusi: atur sequencing start pompa.</p>
+          <p><strong>Pelajaran:</strong><br>
+          <strong>Jangan fokus pada gejala — cari pola & akar masalah.</strong><br>
+          Data historis = kunci diagnosis akurat.</p>
+        </div>
+
+        <h3>Latihan di Kelas:</h3>
+        <p>Kamu akan:<br>
+        - Gunakan simulator TechSim 5000 dengan 5 skenario gangguan<br>
+        - Buat troubleshooting chart untuk tiap kasus<br>
+        - Latihan isolasi gangguan dengan multimeter & HMI<br>
+        - Presentasi solusi ke tim</p>
+      </section>
+
+      <section>
+        <h2>5️⃣ TEMPLATE TROUBLESHOOTING CHART (DOWNLOAD)</h2>
+        <p>Gunakan template ini untuk setiap insiden di kapal:</p>
+        <pre style="background:#263238; color:#eeeeee; padding:16px; border-radius:8px; font-family:monospace;">
+TANGGAL: ___________
+WAKTU: ___________
+SISTEM: ___________
+
+GEJALA:
+• _________________________
+• _________________________
+
+DATA YANG DIKUMPULKAN:
+• Tegangan: _____ V
+• Arus: _____ A
+• Error Code: ___________
+• Logbook Sebelumnya: ______
+
+DAFTAR KEMUNGKINAN PENYEBAB:
+1. _________________________
+2. _________________________
+3. _________________________
+
+LANGKAH VERIFIKASI:
+[ ] Cek _________ → Hasil: ______
+[ ] Cek _________ → Hasil: ______
+
+AKAR MASALAH: ________________
+TINDAKAN: ____________________
+VERIFIKASI AKHIR: ____________</pre>
+        <p><em>Template ini tersedia di folder Google Drive materi minggu ini.</em></p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 RAVINDO MARITIME LEARNING SYSTEM | Universitas Hang Tuah (UHT)</p>
+      <p>⚓ Engineer yang Analitis = Kapal yang Andal! 🔥</p>
+    </footer>
+  </div>
+</body>
+</html>
+
